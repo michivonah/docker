@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command: --api.insecure=true --providers.docker
+    restart: unless-stopped
+    ports:
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "8080:8080" # Web UI (enabled by --api.insecure=true)
+    volumes:
+      - ./config:/etc/traefik # Traefik Configuration
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    name: traefik_default
+    driver: bridge
+

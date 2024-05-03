@@ -1,0 +1,46 @@
+---
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+# Dashboard should be disabled in production
+api:
+  dashboard: true
+  insecure: true
+entryPoints:
+  http:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+
+  https:
+    address: :443
+
+  traefik:
+    address: :8080
+
+certificatesResolvers:
+  staging:
+    acme:
+      email: you@example.com
+      storage: /etc/traefik/certs/acme.json
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entryPoint: http
+  production:
+    acme:
+      email: you@example.com
+      storage: /etc/traefik/certs/acme.json
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entryPoint: http
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: /etc/traefik
+    watch: true
+
