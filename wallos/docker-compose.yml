@@ -1,0 +1,14 @@
+version: '3.0'
+
+services:
+  wallos:
+    container_name: wallos
+    image: bellamy/wallos:main
+    ports:
+      - "4444:80/tcp"
+    environment:
+      TZ: 'Europe/Zurich'
+    volumes:
+      - './db:/var/www/html/db'
+      - './logos:/var/www/html/images/uploads/logos'
+    restart: unless-stopped

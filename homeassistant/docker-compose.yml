@@ -1,0 +1,14 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "homeassistant/home-assistant:latest"
+    volumes:
+      - ./data:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro # Bluetooth
+    #devices: # Optional if you use a zigbee communicator
+    #  - /dev/ttyUSB0
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
