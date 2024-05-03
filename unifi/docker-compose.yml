@@ -1,0 +1,15 @@
+version: "3"
+services:
+    unifi:
+        image: jacobalberty/unifi
+        container_name: unifi
+        restart: unless-stopped
+        ports:
+            - 8080:8080 # Communication with unifi devices, required
+            - 8443:8443 # WebGUI, required
+            - 3478:3478/udp # STUN, required
+            #- 6789:6789 # UniFi Mobile SpeedTest, optional
+        volumes:
+            - ./unifi:/unifi
+        environment:
+            - TZ=Europe/Zurich
