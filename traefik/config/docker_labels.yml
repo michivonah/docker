@@ -1,0 +1,17 @@
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homarr.entrypoints=http, https"
+      - "traefik.http.routers.homarr.rule=Host(`homarr.example.com`)"
+      - "traefik.http.routers.homarr.tls=true"
+      - "traefik.http.routers.homarr.tls.certresolver=production"
+      - "traefik.docker.network=traefik_traefik"
+    networks:
+      - traefik
+      - memos
+
+networks:
+  homarr:
+    external: false
+  traefik:
+    name: traefik_traefik
+    external: true
