@@ -48,9 +48,9 @@ podman run --name beszel-agent \
 #     -d \
 #     --restart always \
 #     --net host \
+#     --volume ./beszel_agent_data:/var/lib/beszel-agent \
 #     -e KEY="<public_key>" \
 #     -e LISTEN=45876 \
 #     -e TOKEN="<token>" \
 #     -e HUB_URL="<hub_url>" \
-#     -u ${UID:-1000}:${GID:-1000} \
 #     docker.io/henrygd/beszel-agent:latest
