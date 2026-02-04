@@ -34,7 +34,7 @@ podman run --name beszel-agent \
     --restart always \
     --net host \
     --volume ./beszel_socket:/beszel_socket \
-    --volume ./beszel_agent_data:/var/lib/beszel-agent \
+    --volume ./beszel_agent_data:/var/lib/beszel-agent:z,U \
     -e KEY="<public_key>" \
     -e LISTEN="/beszel_socket/beszel.sock" \
     -e TOKEN="<token>" \
@@ -48,7 +48,7 @@ podman run --name beszel-agent \
 #     -d \
 #     --restart always \
 #     --net host \
-#     --volume ./beszel_agent_data:/var/lib/beszel-agent \
+#     --volume ./beszel_agent_data:/var/lib/beszel-agent:z,U \
 #     -e KEY="<public_key>" \
 #     -e LISTEN=45876 \
 #     -e TOKEN="<token>" \
