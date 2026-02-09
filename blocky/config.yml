@@ -1,0 +1,117 @@
+upstreams:
+  groups:
+    default:
+      - https://dns.digitale-gesellschaft.ch/dns-query
+      - tcp-tls:dns.digitale-gesellschaft.ch
+      - https://dns.quad9.net/dns-query
+      - tcp-tls:dns.quad9.net
+      - tcp-tls:dns3.digitalcourage.de
+
+    classic:
+      - https://dns.cloudflare.com/dns-query
+      - tcp-tls:one.one.one.one
+      - https://dns.google/dns-query
+      - tcp-tls:dns.google
+  strategy: parallel_best
+
+bootstrapDns:
+  - upstream: https://dns.cloudflare.com/dns-query
+    ips:
+    - 1.1.1.1
+  - upstream: https://dns.google/dns-query
+    ips:
+    - 8.8.8.8
+
+blocking:
+  denylists:
+    ads:
+      - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+      - https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts
+      - https://raw.githubusercontent.com/tiuxo/hosts/master/ads
+      - https://raw.githubusercontent.com/nextdns/cname-cloaking-blocklist/master/domains
+
+    scam:
+      - https://raw.githubusercontent.com/nextdns/metadata/6f9b6cd0670e7e31ad2ca716742088c2fc0616c2/security/typosquatting/exclusions
+      - https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt
+      # - https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+      - https://raw.githubusercontent.com/michivonah/dns-blocklists/main/blocklists/scam-phishing-blocklist.txt
+      - https://adguardteam.github.io/HostlistsRegistry/assets/filter_30.txt
+      - https://adguardteam.github.io/HostlistsRegistry/assets/filter_50.txt
+
+    china_shops:
+      # Lists from https://github.com/AdguardTeam/HostlistsRegistry/tree/fd7700c4a0d4c1b70746582b0b648f15dbd68dfe/services
+      # Temu
+      - |
+        *.temu.com
+        *.kwcdn.com
+        *.temucdn.com
+      # Shein
+      - |
+        *.shein.com
+        *.shein.co.uk
+        *.shein.se
+        *.sheinsz.ltwebstatic.com
+      # Wish + Joom
+      - |
+        *.wish.com
+        *.joom.com
+
+  allowlists:
+    ads:
+      - https://raw.githubusercontent.com/nextdns/click-tracking-domains/main/domains
+      - |
+        *.email-link.adtidy.org
+        *.awin.com
+        *.awin1.com
+        *.adtraction.com
+        *.shareasale.com
+        *.go.chiefs.ch
+        *.s.youtube.com
+        *.ads.youtube.com
+        *.hst.tradedoubler.com
+        *.share.google
+
+  clientGroupsBlock:
+    default:
+      - ads
+      - scam
+      - china_shops
+
+    only_scam*:
+      - scam
+
+  blockType: 23.171.240.158
+  blockTTL: 10s
+
+  loading:
+    refreshPeriod: 24h
+    downloads:
+      timeout: 30s
+      writeTimeout: 60s
+      readTimeout: 60s
+      attempts: 5
+      cooldown: 10s
+    maxErrorsPerSource: 5
+
+caching:
+  maxItemsCount: 0
+  prefetching: true
+  prefetchExpires: 2h
+  prefetchThreshold: 10
+
+queryLog:
+  type: console
+  fields:
+    - clientIP
+    - clientName
+    - duration
+
+ports:
+  # dns:
+  #   - 53
+  tls: 853
+  https: 443
+  dohPath: /dns-query
+
+dnssec:
+  validate: true
