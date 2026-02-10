@@ -1,0 +1,36 @@
+services:
+  blocky:
+    image: ghcr.io/0xerr0r/blocky
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    ports:
+      - target: 53
+        published: 53
+        protocol: tcp
+      - target: 53
+        published: 53
+        protocol: udp
+      - target: 443
+        published: 443
+        protocol: tcp
+      - target: 853
+        published: 853
+        protocol: tcp
+    environment:
+      - TZ=Europe/Zurich
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    configs:
+      - source: blocky_config
+        target: /app/config.yml
+
+configs:
+  blocky_config:
+    file: ./config.yml
+    #external: true
+
+# docker stack deploy -c docker-compose.swarm.yml blocky
+# docker stack services blocky --> services anzeigen
+# docker stack ps blocky
