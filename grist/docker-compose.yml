@@ -1,0 +1,11 @@
+services:
+    grist:
+	container_name: grist
+        ports:
+            - 8484:8484
+        volumes:
+            - ./grist:/persist
+        environment:
+            - GRIST_SESSION_SECRET=invent-a-secret-here
+            - GRIST_DEFAULT_EMAIL=admin@example.com
+        image: gristlabs/grist
