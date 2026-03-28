@@ -1,0 +1,54 @@
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:14-rootless
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__database__DB_TYPE=postgres
+      - FORGEJO__database__HOST=db:5432
+      - FORGEJO__database__NAME=forgejo
+      - FORGEJO__database__USER=forgejo
+      - FORGEJO__database__PASSWD=replace-with-secure-string
+    restart: always
+    networks:
+      - forgejo
+      - traefik
+    volumes:
+      - ./forgejo:/var/lib/gitea
+      - ./conf:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '222:2222'
+    user: 1000:1000
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.forgejo.entrypoints=web, websecure"
+      - "traefik.http.routers.forgejo.rule=Host(`git.example.com`)"
+      - "traefik.http.routers.forgejo.tls=true"
+      - "traefik.http.routers.forgejo.tls.certresolver=production"
+      - "traefik.docker.network=traefik_default"
+      - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=forgejo
+      - POSTGRES_PASSWORD=replace-with-secure-string
+      - POSTGRES_DB=forgejo
+    user: 1000:1000
+    networks:
+      - forgejo
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+
+networks:
+  forgejo:
+    external: false
+  traefik:
+    name: traefik_default
+    external: true
