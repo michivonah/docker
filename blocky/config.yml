@@ -33,7 +33,7 @@ blocking:
     scam:
       - https://raw.githubusercontent.com/nextdns/metadata/6f9b6cd0670e7e31ad2ca716742088c2fc0616c2/security/typosquatting/exclusions
       - https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt
-      # - https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+      - https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
       - https://raw.githubusercontent.com/michivonah/dns-blocklists/main/blocklists/scam-phishing-blocklist.txt
       - https://adguardteam.github.io/HostlistsRegistry/assets/filter_30.txt
       - https://adguardteam.github.io/HostlistsRegistry/assets/filter_50.txt
@@ -101,14 +101,15 @@ caching:
 
 queryLog:
   type: console
+  logRetentionDays: 3
   fields:
     - clientIP
     - clientName
     - duration
 
 ports:
-  # dns:
-  #   - 53
+  dns:
+    - 53
   tls: 853
   https: 443
   dohPath: /dns-query
