@@ -1,0 +1,14 @@
+# Docs: https://hub.docker.com/r/duplicati/duplicati
+services:
+  duplicati:
+    image: duplicati/duplicati:latest
+    container_name: duplicati
+    hostname: your-server
+    ports:
+      - 8200:8200
+    volumes:
+      - ./config:/data # Config
+      - ./backups:/backups # Local storage for backups (optional)
+    env_file: .env
+    restart: unless-stopped
+    user: 1000:1000
